@@ -1,4 +1,4 @@
-package com.taraskulyavets.gpstracking
+package com.taraskulyavets.gpstracking.old
 
 import android.Manifest
 import android.app.PendingIntent
@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.os.IBinder
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import com.taraskulyavets.gpstracking.R
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.CoroutineScope
@@ -34,6 +35,7 @@ class GpsService : Service(), LocationListener {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        println("asdasdasdjkhkjsd")
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
         val notification = NotificationCompat.Builder(this, "777")
@@ -63,14 +65,15 @@ class GpsService : Service(), LocationListener {
 //        if (providerName != null) {
 //            println(null)
 //        }
-        locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-            30_000L,
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+            5000,
             100f,
             this)
         return START_NOT_STICKY
     }
 
     override fun onLocationChanged(loc: Location) {
+        println(loc)
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 ClientHTTP.client.post("http://vladar.tk:3000") {

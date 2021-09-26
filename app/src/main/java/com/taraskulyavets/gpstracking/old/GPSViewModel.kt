@@ -1,4 +1,4 @@
-package com.taraskulyavets.gpstracking
+package com.taraskulyavets.gpstracking.old
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

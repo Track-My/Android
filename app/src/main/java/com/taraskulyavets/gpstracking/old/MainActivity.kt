@@ -1,4 +1,4 @@
-package com.taraskulyavets.gpstracking
+package com.taraskulyavets.gpstracking.old
 
 import android.Manifest
 import android.app.NotificationChannel

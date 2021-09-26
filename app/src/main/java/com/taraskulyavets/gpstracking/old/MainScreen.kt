@@ -1,4 +1,4 @@
-package com.taraskulyavets.gpstracking
+package com.taraskulyavets.gpstracking.old
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

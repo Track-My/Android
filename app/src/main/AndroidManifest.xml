@@ -16,14 +16,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GPSTracking">
+        android:theme="@style/Theme.GPSTracking"
+        android:name=".GPSApp">
         <service
-            android:name=".GpsService"
+            android:name=".old.GpsService"
             android:enabled="true"
             android:foregroundServiceType="location"
             android:exported="true" />
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".main.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
