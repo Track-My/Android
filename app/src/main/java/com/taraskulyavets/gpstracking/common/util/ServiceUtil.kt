@@ -4,11 +4,11 @@ import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
-import com.taraskulyavets.gpstracking.old.GpsService
+import com.taraskulyavets.gpstracking.gpstracking.GPSService
 
 class ServiceUtil(private val context: Context) {
     private companion object {
-        val gpsClass = GpsService::class.java
+        val gpsClass = GPSService::class.java
     }
 
     fun startService() {

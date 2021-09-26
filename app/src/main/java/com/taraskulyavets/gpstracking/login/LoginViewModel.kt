@@ -29,9 +29,9 @@ class LoginViewModel(private val repo: LoginRepository, private val prefs: GPSPr
                 password = pass.value //todo create sha-256
             ),
             Device(
-                name = "AndroidEmulator",
-                type = "Phone",
-                uuid = "asdajhuakjsahjukksakd"
+                name = "${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}",
+                type = "MOBILE",
+                uuid = android.os.Build.ID
             )
         )
 

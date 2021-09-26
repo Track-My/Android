@@ -19,7 +19,7 @@
         android:theme="@style/Theme.GPSTracking"
         android:name=".GPSApp">
         <service
-            android:name=".old.GpsService"
+            android:name=".gpstracking.GPSService"
             android:enabled="true"
             android:foregroundServiceType="location"
             android:exported="true" />

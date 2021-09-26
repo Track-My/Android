@@ -7,13 +7,13 @@ import com.taraskulyavets.gpstracking.common.util.GPSPrefs
 import com.taraskulyavets.gpstracking.common.util.PermissionsUtil
 import com.taraskulyavets.gpstracking.common.util.ServiceUtil
 import com.taraskulyavets.gpstracking.gpstracking.GPSViewModel
+import com.taraskulyavets.gpstracking.gpstracking.LocationRepository
 import com.taraskulyavets.gpstracking.login.LoginRepository
 import com.taraskulyavets.gpstracking.login.LoginViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.logging.*
-import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -23,6 +23,7 @@ val appModule = module {
     viewModel { GPSViewModel(get(), get(), get()) }
 
     factory { LoginRepository(get()) }
+    factory { LocationRepository(get(), get()) }
     factory { ChannelUtil(androidContext()) }
     factory { PermissionsUtil(androidContext()) }
     factory { ServiceUtil(androidContext()) }

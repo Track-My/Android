@@ -1,4 +1,4 @@
-package com.taraskulyavets.gpstracking.old
+package com.taraskulyavets.gpstracking.gpstracking
 
 import android.Manifest
 import android.app.PendingIntent
@@ -14,16 +14,23 @@ import android.os.IBinder
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.taraskulyavets.gpstracking.R
+import com.taraskulyavets.gpstracking.gpstracking.model.MyLocation
+import com.taraskulyavets.gpstracking.main.MainActivity
+import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import java.lang.Exception
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
-class GpsService : Service(), LocationListener {
+class GPSService : Service(), LocationListener {
 
     private val locManager by lazy { getSystemService(Context.LOCATION_SERVICE) as LocationManager }
+    private val locationRepository by inject<LocationRepository>()
 
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
@@ -39,20 +46,20 @@ class GpsService : Service(), LocationListener {
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
         val notification = NotificationCompat.Builder(this, "777")
-            .setContentTitle("GPS tracking")
-            .setContentText("Description")
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentIntent(pendingIntent)
-            .build()
+                .setContentTitle("GPS tracking")
+                .setContentText("Description")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentIntent(pendingIntent)
+                .build()
         startForeground(1, notification)
 
         if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
         ) {
             println("No permission")
             return START_NOT_STICKY
@@ -65,10 +72,10 @@ class GpsService : Service(), LocationListener {
 //        if (providerName != null) {
 //            println(null)
 //        }
-        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-            5000,
-            100f,
-            this)
+        locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                30000,
+                100f,
+                this)
         return START_NOT_STICKY
     }
 
@@ -76,12 +83,14 @@ class GpsService : Service(), LocationListener {
         println(loc)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                ClientHTTP.client.post("http://vladar.tk:3000") {
-                    headers {
-                        append(HttpHeaders.ContentType, "application/json")
-                    }
-                    body = MyLocation(loc.latitude, loc.longitude)
-                }
+                val time = ZonedDateTime.now()
+                locationRepository.saveLocation(
+                    MyLocation(
+                        loc.latitude,
+                        loc.longitude,
+                        time.format(DateTimeFormatter.ISO_INSTANT)
+                    )
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }
