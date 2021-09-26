@@ -1,4 +1,4 @@
-package com.taraskulyavets.gpstracking.common.helper
+package com.taraskulyavets.gpstracking.common.util
 
 import android.content.SharedPreferences
 import com.google.gson.Gson

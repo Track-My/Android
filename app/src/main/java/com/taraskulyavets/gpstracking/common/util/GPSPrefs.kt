@@ -1,4 +1,4 @@
-package com.taraskulyavets.gpstracking.common.helper
+package com.taraskulyavets.gpstracking.common.util
 
 import com.taraskulyavets.gpstracking.login.model.User
 
