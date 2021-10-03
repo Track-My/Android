@@ -1,5 +1,6 @@
 package com.taraskulyavets.gpstracking.login
 
+import android.provider.Settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.taraskulyavets.gpstracking.common.util.GPSPrefs
@@ -8,6 +9,7 @@ import com.taraskulyavets.gpstracking.login.model.Device
 import com.taraskulyavets.gpstracking.login.model.LoginCredentials
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.util.*
 
 class LoginViewModel(private val repo: LoginRepository, private val prefs: GPSPrefs) : ViewModel() {
     val login = MutableStateFlow("email")
@@ -23,6 +25,11 @@ class LoginViewModel(private val repo: LoginRepository, private val prefs: GPSPr
     }
 
     fun loginClick() {
+
+        if (prefs.uuid.isEmpty()) {
+            prefs.uuid = UUID.randomUUID().toString()
+        }
+
         val credentials = LoginCredentials(
             Credentials(
                 email = login.value,
@@ -31,7 +38,7 @@ class LoginViewModel(private val repo: LoginRepository, private val prefs: GPSPr
             Device(
                 name = "${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}",
                 type = "MOBILE",
-                uuid = android.os.Build.ID
+                uuid = prefs.uuid
             )
         )
 
@@ -48,5 +55,11 @@ class LoginViewModel(private val repo: LoginRepository, private val prefs: GPSPr
 
     fun setIsLogined(b: Boolean) {
         isLogined.tryEmit(b)
+    }
+
+    fun logout() {
+        prefs.user = null
+        prefs.token = ""
+        isLogined.tryEmit(false)
     }
 }

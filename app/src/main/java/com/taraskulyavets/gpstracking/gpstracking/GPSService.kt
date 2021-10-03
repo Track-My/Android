@@ -72,7 +72,7 @@ class GPSService : Service(), LocationListener {
 //        if (providerName != null) {
 //            println(null)
 //        }
-        locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 30000,
                 100f,
                 this)

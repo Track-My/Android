@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import com.taraskulyavets.gpstracking.GPSApp
 import com.taraskulyavets.gpstracking.common.util.ChannelUtil
+import com.taraskulyavets.gpstracking.common.util.GPSPrefs
 import com.taraskulyavets.gpstracking.common.util.PermissionsUtil
 import com.taraskulyavets.gpstracking.common.util.ServiceUtil
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +51,11 @@ class GPSViewModel(
             serviceUtil.startService()
             true
         }
+    }
+
+    fun onStop() {
+        serviceUtil.stopService()
+        isRunning = false
     }
 
     fun onLaunch() {

@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val isLogined by loginViewModel.isLogined.collectAsState()
             if (isLogined) {
-                GpsScreen(gpsViewModel)
+                GpsScreen(gpsViewModel, loginViewModel)
             } else {
                 LoginScreen(loginViewModel)
             }
